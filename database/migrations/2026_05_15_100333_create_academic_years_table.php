@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tutor_academic_years');
+        Schema::dropIfExists('academic_years');
     }
 };

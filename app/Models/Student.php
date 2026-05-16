@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'package_id',
         'nisn',
+        'nik',
         'gender',
+        'birth_place',
+        'birth_date',
         'address',
+        'phone',
+        'parent_name',
+        'status',
     ];
 
     public function user()
@@ -25,5 +28,10 @@ class Student extends Model
     public function package()
     {
         return $this->belongsTo(Package::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
     }
 }

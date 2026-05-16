@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Tutor extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'nip',
@@ -16,16 +14,21 @@ class Tutor extends Model
         'specialization',
         'phone',
         'address',
-        'photo'
+        'photo',
     ];
 
-    public function subjects() 
+    public function user()
     {
-        return $this->belongsToMany(subject::class, 'tutor_subjects');
+        return $this->belongsTo(User::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'tutor_subjects');
     }
 
     public function grades()
     {
-        return $this->belongsToMany(grade::class, 'tutor_grades');
+        return $this->hasMany(Grade::class);
     }
 }

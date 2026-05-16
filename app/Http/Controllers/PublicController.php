@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Package;
 use App\Models\Page;
 use App\Models\Student;
 use App\Models\Tutor;
-use App\Models\Package;
 
 class PublicController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PublicController;
-use App\Http\Controllers\PpdbController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Tutor\DashboardController as TutorDashboardController;
+use App\Http\Controllers\PpdbController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Tutor\DashboardController as TutorDashboardController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

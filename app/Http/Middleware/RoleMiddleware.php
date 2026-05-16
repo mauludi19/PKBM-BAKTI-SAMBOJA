@@ -15,7 +15,7 @@ class RoleMiddleware
         string ...$roles
     ): Response {
         // Cek apakah user sudah login
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             abort(403, 'Unauthorized');
         }
 
@@ -23,7 +23,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         // Cek apakah role user termasuk role yang diizinkan
-        if (!in_array($user->role, $roles)) {
+        if (! in_array($user->role, $roles)) {
             abort(403, 'Access denied');
         }
 

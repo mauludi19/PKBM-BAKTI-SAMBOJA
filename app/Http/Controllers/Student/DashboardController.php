@@ -20,7 +20,7 @@ class DashboardController extends Controller
             ->first();
 
         // Jika data student tidak ditemukan
-        if (!$student) {
+        if (! $student) {
             abort(404, 'Data siswa tidak ditemukan.');
         }
 

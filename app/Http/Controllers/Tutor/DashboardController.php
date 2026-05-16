@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $tutor = Tutor::where('user_id', $user->id)->first();
 
         // Jika data tutor tidak ditemukan
-        if (!$tutor) {
+        if (! $tutor) {
             abort(404, 'Data tutor tidak ditemukan.');
         }
 

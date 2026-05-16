@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('parent_name')->nullable();
             $table->string('previous_school')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected',])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

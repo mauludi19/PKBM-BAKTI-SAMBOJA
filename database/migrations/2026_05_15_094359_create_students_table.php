@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('parent_name')->nullable();
-            $table->enum('status', ['active', 'inactive', 'gradeuated'])->default('active');
+            $table->enum('status', ['active', 'inactive', 'graduated'])->default('active');
             $table->timestamps();
         });
     }

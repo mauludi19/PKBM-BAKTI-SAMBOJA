@@ -17,42 +17,48 @@ class DashboardController extends Controller
         // Tahun ajaran aktif
         $activeAcademicYear = AcademicYear::where('is_active', true)->first();
 
-        // Statistik utama
+        // =========================
+        // STATISTIK UTAMA
+        // =========================
         $statistics = [
             'total_students' => Student::count(),
-            'total_tutors' => Tutor::count(),
-            'total_users' => User::count(),
-            'total_ppdb' => PpdbRegistration::count(),
-            'total_news' => News::count(),
+            'total_tutors'   => Tutor::count(),
+            'total_users'    => User::count(),
+            'total_ppdb'     => PpdbRegistration::count(),
+            'total_news'     => News::count(),
         ];
 
-        // Statistik PPDB berdasarkan status
+        // =========================
+        // STATUS PPDB
+        // =========================
+        $ppdbStatus = PpdbRegistration::selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
         $ppdbStatus = [
-            'pending' => PpdbRegistration::where('status', 'pending')->count(),
-            'approved' => PpdbRegistration::where('status', 'approved')->count(),
-            'rejected' => PpdbRegistration::where('status', 'rejected')->count(),
+            'pending'  => $ppdbStatus['pending'] ?? 0,
+            'approved' => $ppdbStatus['approved'] ?? 0,
+            'rejected' => $ppdbStatus['rejected'] ?? 0,
         ];
 
-        // Statistik PPDB berdasarkan jenis pendaftaran
+        // =========================
+        // JENIS PENDAFTARAN PPDB
+        // =========================
+        $ppdbType = PpdbRegistration::selectRaw('registration_type, COUNT(*) as total')
+            ->groupBy('registration_type')
+            ->pluck('total', 'registration_type');
+
         $ppdbType = [
-            'bop' => PpdbRegistration::where('registration_type', 'bop')->count(),
-            'mandiri' => PpdbRegistration::where('registration_type', 'mandiri')->count(),
+            'bop'     => $ppdbType['bop'] ?? 0,
+            'mandiri' => $ppdbType['mandiri'] ?? 0,
         ];
 
-        // 5 pendaftaran PPDB terbaru
-        $latestRegistrations = PpdbRegistration::latest()
-            ->take(5)
-            ->get();
-
-        // 5 berita terbaru
-        $latestNews = News::latest()
-            ->take(5)
-            ->get();
-
-        // 5 user terbaru
-        $latestUsers = User::latest()
-            ->take(5)
-            ->get();
+        // =========================
+        // DATA TERBARU
+        // =========================
+        $latestRegistrations = PpdbRegistration::latest()->take(5)->get();
+        $latestNews          = News::latest()->take(5)->get();
+        $latestUsers         = User::latest()->take(5)->get();
 
         return view('admin.dashboard', compact(
             'activeAcademicYear',

@@ -1,57 +1,88 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ProfileController;
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PpdbController;
 
+/*
+|--------------------------------------------------------------------------
+| ADMIN CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TutorController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\PpdbController as AdminPpdbController;
+use App\Http\Controllers\Admin\TutorSubjectController;
+
+/*
+|--------------------------------------------------------------------------
+| TUTOR CONTROLLERS
+|--------------------------------------------------------------------------
+*/
 
 use App\Http\Controllers\Tutor\DashboardController as TutorDashboardController;
+use App\Http\Controllers\Tutor\GradeController as TutorGradeController;
+
+/*
+|--------------------------------------------------------------------------
+| STUDENT CONTROLLERS
+|--------------------------------------------------------------------------
+*/
+
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\GradeController as StudentGradeController;
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC WEBSITE
+| PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [PublicController::class, 'home'])
-    ->name('home');
-
-Route::get('/tutors', [PublicController::class, 'tutors'])
-    ->name('tutors.index');
-
-Route::get('/students', [PublicController::class, 'students'])
-    ->name('students.index');
+Route::get('/', [PublicController::class, 'home'])->name('home');
+Route::get('/about', [PublicController::class, 'about'])->name('about');
+Route::get('/packages', [PublicController::class, 'packages'])->name('packages');
+Route::get('/tutors', [PublicController::class, 'tutors'])->name('tutors');
+Route::get('/news', [PublicController::class, 'news'])->name('news');
+Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
 
 /*
 |--------------------------------------------------------------------------
-| PPDB
+| PPDB PUBLIC (FIXED + CLEAN)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/ppdb', [PpdbController::class, 'create'])
+Route::get('/ppdb/create', [PpdbController::class, 'create'])
     ->name('ppdb.create');
 
 Route::post('/ppdb', [PpdbController::class, 'store'])
     ->name('ppdb.store');
 
+Route::get('/ppdb/success', [PpdbController::class, 'success'])
+    ->name('ppdb.success');
+
 /*
 |--------------------------------------------------------------------------
-| DEFAULT DASHBOARD
+| DASHBOARD (BREEZE)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')
-    ->get('/dashboard', function () {
-        return redirect()->route('home');
-    })
-    ->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
@@ -61,19 +92,14 @@ Route::middleware('auth')
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN
+| ADMIN AREA
 |--------------------------------------------------------------------------
 */
 
@@ -85,40 +111,31 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
-        /*
-        |--------------------------------------------------------------------------
-        | Package Management
-        |--------------------------------------------------------------------------
-        */
-
+        Route::resource('users', UserController::class);
         Route::resource('packages', PackageController::class);
+        Route::resource('academic-years', AcademicYearController::class);
+        Route::resource('subjects', SubjectController::class);
+        Route::resource('tutors', TutorController::class);
+        Route::resource('students', StudentController::class);
 
         /*
-        |--------------------------------------------------------------------------
-        | Academic Year Management
-        |--------------------------------------------------------------------------
+        | PPDB ADMIN
         */
+        Route::get('ppdb', [AdminPpdbController::class, 'index'])->name('ppdb.index');
+        Route::get('ppdb/{ppdb}', [AdminPpdbController::class, 'show'])->name('ppdb.show');
+        Route::put('ppdb/{ppdb}/approve', [AdminPpdbController::class, 'approve'])->name('ppdb.approve');
+        Route::put('ppdb/{ppdb}/reject', [AdminPpdbController::class, 'reject'])->name('ppdb.reject');
+        Route::delete('ppdb/{ppdb}', [AdminPpdbController::class, 'destroy'])->name('ppdb.destroy');
 
-        Route::resource(
-            'academic-years',
-            AcademicYearController::class
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Subject Management
-        |--------------------------------------------------------------------------
-        */
-
-        Route::resource(
-            'subjects',
-            SubjectController::class
-        );
+        Route::get('tutor-subjects', [TutorSubjectController::class, 'index'])->name('tutor-subjects.index');
+        Route::get('tutor-subjects/create', [TutorSubjectController::class, 'create'])->name('tutor-subjects.create');
+        Route::post('tutor-subjects', [TutorSubjectController::class, 'store'])->name('tutor-subjects.store');
+        Route::delete('tutor-subjects/{tutor}/{subject}', [TutorSubjectController::class, 'destroy'])->name('tutor-subjects.destroy');
     });
 
 /*
 |--------------------------------------------------------------------------
-| TUTOR
+| TUTOR AREA
 |--------------------------------------------------------------------------
 */
 
@@ -127,13 +144,13 @@ Route::middleware(['auth', 'role:tutor'])
     ->name('tutor.')
     ->group(function () {
 
-        Route::get('/dashboard', [TutorDashboardController::class, 'index'])
-            ->name('dashboard');
+        Route::get('/dashboard', [TutorDashboardController::class, 'index'])->name('dashboard');
+        Route::resource('grades', TutorGradeController::class);
     });
 
 /*
 |--------------------------------------------------------------------------
-| STUDENT
+| STUDENT AREA
 |--------------------------------------------------------------------------
 */
 
@@ -142,8 +159,9 @@ Route::middleware(['auth', 'role:student'])
     ->name('student.')
     ->group(function () {
 
-        Route::get('/dashboard', [StudentDashboardController::class, 'index'])
-            ->name('dashboard');
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/grades', [StudentGradeController::class, 'index'])->name('grades.index');
+        Route::get('/grades/{grade}', [StudentGradeController::class, 'show'])->name('grades.show');
     });
 
 require __DIR__.'/auth.php';

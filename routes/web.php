@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\PpdbController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
+
+Route::get('/pages/profil', [PublicController::class, 'profile'])->name('profile');
 
 Route::get('/tutors', [PublicController::class, 'tutors'])->name('tutors.index');
 
@@ -40,6 +43,9 @@ Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
+
+        // Pages Management
+        Route::resource('pages', AdminPageController::class);
     });
 
 /*

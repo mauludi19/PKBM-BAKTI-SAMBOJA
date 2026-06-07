@@ -69,4 +69,29 @@ class PublicController extends Controller
             'students'
         ));
     }
+
+    /**
+     * Menampilkan halaman profil PKBM.
+     */
+    public function profile()
+    {
+        $profile = Page::where('slug', 'profil')->first();
+
+        if (!$profile) {
+            $profile = new Page([
+                'title' => 'Profil PKBM Bakti Samboja',
+                'slug' => 'profil',
+                'content' => 'Halaman profil PKBM Bakti Samboja',
+                'is_active' => true,
+            ]);
+        }
+
+        $statistics = [
+            'total_students' => Student::count(),
+            'total_tutors' => Tutor::count(),
+            'total_packages' => Package::count(),
+        ];
+
+        return view('public.profile', compact('profile', 'statistics'));
+    }
 }

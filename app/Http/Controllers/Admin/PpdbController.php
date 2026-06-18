@@ -65,7 +65,7 @@ class PpdbController extends Controller
             'user_id' => $user->id,
             'package_id' => $ppdb->package_id,
 
-            'nisn' => null,
+            'nisn' => $ppdb->nisn,
 
             'nik' => $ppdb->nik,
             'gender' => $ppdb->gender,

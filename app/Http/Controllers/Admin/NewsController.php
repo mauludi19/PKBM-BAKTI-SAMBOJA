@@ -4,122 +4,108 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\News;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-    /**
-     * Menampilkan daftar berita.
-     */
     public function index()
     {
-        $news = News::with('author')
-            ->latest('published_at')
-            ->paginate(10);
+        $news = News::latest()->get();
 
         return view('admin.news.index', compact('news'));
     }
 
-    /**
-     * Menampilkan form untuk membuat berita baru.
-     */
     public function create()
     {
         return view('admin.news.create');
     }
 
-    /**
-     * Menyimpan berita baru.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_published' => 'sometimes|boolean',
+            'content' => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'is_published' => 'nullable|boolean',
         ]);
 
-        // Generate slug dari title
-        $validated['slug'] = Str::slug($request->title) . '-' . time();
-        $validated['author_id'] = auth()->id();
-        $validated['is_published'] = $request->has('is_published') ? true : false;
-        $validated['published_at'] = $request->has('is_published') ? now() : null;
+        $slug = Str::slug($validated['title']);
 
-        // Handle thumbnail upload
+        $thumbnailPath = null;
+
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('news', 'public');
-            $validated['thumbnail'] = $thumbnailPath;
+            $thumbnailPath = $request->file('thumbnail')
+                ->store('news', 'public');
         }
 
-        News::create($validated);
+        /**
+         * AMBIL ADMIN SECARA AMAN (TIDAK GANTUNG AUTH)
+         */
+        $admin = User::where('role', 'admin')->first();
 
-        return redirect()->route('admin.news.index')
+        News::create([
+            'title' => $validated['title'],
+            'slug' => $slug,
+            'content' => $validated['content'],
+            'thumbnail' => $thumbnailPath,
+
+            'author_id' => $admin ? $admin->id : null,
+
+            'is_published' => $request->boolean('is_published'),
+            'published_at' => now(),
+        ]);
+
+        return redirect()
+            ->route('admin.news.index')
             ->with('success', 'Berita berhasil dibuat.');
     }
 
-    /**
-     * Menampilkan detail berita.
-     */
     public function show(News $news)
     {
         return view('admin.news.show', compact('news'));
     }
 
-    /**
-     * Menampilkan form untuk mengedit berita.
-     */
     public function edit(News $news)
     {
         return view('admin.news.edit', compact('news'));
     }
 
-    /**
-     * Memperbarui berita.
-     */
     public function update(Request $request, News $news)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_published' => 'sometimes|boolean',
+            'content' => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'is_published' => 'nullable|boolean',
         ]);
 
-        $validated['is_published'] = $request->has('is_published') ? true : false;
-        $validated['published_at'] = $request->has('is_published') ? now() : null;
+        $news->update([
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'content' => $validated['content'],
+            'is_published' => $request->boolean('is_published'),
+        ]);
 
-        // Handle thumbnail upload
         if ($request->hasFile('thumbnail')) {
-            // Hapus thumbnail lama jika ada
-            if ($news->thumbnail && file_exists(storage_path('app/public/' . $news->thumbnail))) {
-                unlink(storage_path('app/public/' . $news->thumbnail));
-            }
-
-            $thumbnailPath = $request->file('thumbnail')->store('news', 'public');
-            $validated['thumbnail'] = $thumbnailPath;
+            $news->update([
+                'thumbnail' => $request->file('thumbnail')
+                    ->store('news', 'public'),
+            ]);
         }
 
-        $news->update($validated);
-
-        return redirect()->route('admin.news.show', $news->id)
+        return redirect()
+            ->route('admin.news.index')
             ->with('success', 'Berita berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus berita.
-     */
     public function destroy(News $news)
     {
-        // Hapus thumbnail jika ada
-        if ($news->thumbnail && file_exists(storage_path('app/public/' . $news->thumbnail))) {
-            unlink(storage_path('app/public/' . $news->thumbnail));
-        }
-
         $news->delete();
 
-        return redirect()->route('admin.news.index')
+        return redirect()
+            ->route('admin.news.index')
             ->with('success', 'Berita berhasil dihapus.');
     }
 }

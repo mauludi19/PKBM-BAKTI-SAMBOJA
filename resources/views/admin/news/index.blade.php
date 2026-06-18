@@ -65,7 +65,7 @@
                             <span class="text-sm text-gray-700">{{ $article->author->name ?? 'Unknown' }}</span>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="text-sm text-gray-700">{{ $article->published_at?->format('d M Y') ?? '-' }}</span>
+                            <span class="text-sm text-gray-700">{{ $article->published_at ? date('d M Y', strtotime($article->published_at)) : '-' }}</span>
                         </td>
                         <td class="px-6 py-4">
                             @if($article->is_published)
@@ -102,7 +102,7 @@
 
         <!-- Pagination -->
         <div class="px-6 py-4 border-t border-gray-200">
-            {{ $news->links() }}
+            <pre>{{ get_class($news) }}</pre>
         </div>
     </div>
 </div>

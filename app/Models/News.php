@@ -16,6 +16,10 @@ class News extends Model
         'is_published',
     ];
 
+
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');

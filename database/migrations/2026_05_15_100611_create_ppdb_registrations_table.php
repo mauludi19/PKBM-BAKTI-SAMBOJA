@@ -13,43 +13,51 @@ return new class extends Migration
     {
         Schema::create('ppdb_registrations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone', 20);
+
+            $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
+
+            $table->foreignId('package_id')
+                ->constrained('packages')
+                ->cascadeOnDelete();
+
+            $table->enum('registration_type', ['BOP', 'mandiri']);
+
+            $table->string('email');
+
+            $table->string('full_name');
+
+            $table->string('nik', 20);
+
+            $table->string('birth_place');
+
+            $table->date('birth_date');
+
+            $table->enum('gender', ['L', 'P']);
+
+            $table->string('last_education');
+
             $table->text('address');
 
-            // Relasi ke Paket & Tahun Ajaran
-            $table->foreignId('package_id')->constrained('packages')->onDelete('cascade');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
+            $table->string('phone', 20);
 
-            // Tambahan Kolom Baru Sesuai Request Abet
-            $table->string('nik', 16)->unique();
-            $table->string('tempat_lahir');
-            $table->date('tanggal_lahir');
-            $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->string('pendidikan_terakhir');
+            $table->string('father_name');
+            $table->string('father_phone', 20)->nullable();
 
-            // Data Orang Tua
-            $table->string('nama_ayah');
-            $table->string('phone_ayah', 20)->nullable();
-            $table->string('nama_ibu');
-            $table->string('phone_ibu', 20)->nullable();
+            $table->string('mother_name');
+            $table->string('mother_phone', 20)->nullable();
 
-            // Upload Dokumen Berkas (Menyimpan nama/path file)
-            $table->string('scan_kk')->nullable();
-            $table->string('scan_akta')->nullable();
-            $table->string('pasfoto')->nullable();
-            $table->string('scan_rapor')->nullable();
+            $table->string('family_card_file');
+            $table->string('birth_certificate_file');
+            $table->string('photo_file');
+            $table->string('last_report_file');
 
-            // Status & Catatan Kelulusan
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
-            $table->text('notes')->nullable();
+            $table->enum('status', [
+                'pending',
+                'approved',
+                'rejected'
+            ])->default('pending');
 
             $table->timestamps();
-
-            // Indexing untuk optimasi query pembacaan data admin
-            $table->index('status');
-            $table->index('academic_year_id');
         });
     }
 

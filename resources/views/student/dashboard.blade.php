@@ -3,143 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Student - PKBM Bakti Samboja</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Dashboard Siswa - PKBM Bakti Samboja</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
+<body class="bg-slate-100 text-slate-900">
+    <div class="min-h-screen lg:flex">
+        <aside class="bg-emerald-950 text-white lg:min-h-screen lg:w-72">
+            <div class="border-b border-white/10 px-6 py-5">
+                <p class="text-sm text-emerald-200">PKBM Bakti Samboja</p>
+                <h1 class="text-xl font-semibold">Siswa Panel</h1>
+            </div>
 
-    @php
-        use Illuminate\Support\Facades\DB;
-        use Illuminate\Support\Facades\Schema;
-
-        $grades = Schema::hasTable('tutor_grades')
-            ? DB::table('tutor_grades')
-                ->leftJoin('subjects', 'tutor_grades.subject_id', '=', 'subjects.id')
-                ->select(
-                    'subjects.name as subject_name',
-                    'tutor_grades.final_grade',
-                    'tutor_grades.semester'
-                )
-                ->take(5)
-                ->get()
-            : collect();
-    @endphp
-
-    <div class="flex min-h-screen">
-
-        <!-- Sidebar -->
-        <aside class="w-64 bg-green-900 text-white p-6">
-            <h1 class="text-2xl font-bold mb-10">Student Panel</h1>
-
-            <nav class="space-y-4">
-                <a href="/student/dashboard"
-                   class="block bg-green-700 px-4 py-3 rounded-lg">
-                    Dashboard
-                </a>
-
-                <a href="/students"
-                   class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    Data Siswa
-                </a>
-
-                <a href="/"
-                   class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    Home
-                </a>
+            <nav class="space-y-1 px-4 py-5">
+                <a href="{{ route('student.dashboard') }}" class="block rounded-md bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white">Dashboard</a>
+                <a href="{{ route('student.grades.index') }}" class="block rounded-md px-4 py-2.5 text-sm font-medium text-emerald-50 hover:bg-white/10">Nilai Saya</a>
+                <a href="{{ route('home') }}" class="block rounded-md px-4 py-2.5 text-sm font-medium text-emerald-50 hover:bg-white/10">Halaman Publik</a>
             </nav>
         </aside>
 
-        <!-- Main -->
-        <main class="flex-1 p-10">
+        <div class="min-w-0 flex-1">
+            <header class="border-b border-slate-200 bg-white">
+                <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
+                    <div>
+                        <p class="text-sm text-slate-500">Informasi akademik</p>
+                        <h2 class="text-2xl font-semibold tracking-tight">Dashboard Siswa</h2>
+                    </div>
 
-            <div class="mb-10">
-                <h2 class="text-4xl font-bold">Dashboard Student</h2>
-                <p class="text-gray-600">
-                    Informasi nilai dan pembelajaran siswa
-                </p>
-            </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50">Keluar</button>
+                    </form>
+                </div>
+            </header>
 
-            <!-- Card -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">Status</p>
-                    <h3 class="text-3xl font-bold text-green-800">
-                        Aktif
-                    </h3>
+            <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                <div class="mb-8 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                    <p class="text-sm font-medium text-emerald-700">Selamat datang</p>
+                    <h3 class="mt-1 text-2xl font-semibold">{{ $student->user?->name }}</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-600">Paket belajar: {{ $student->package?->name ?? '-' }}</p>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">Semester</p>
-                    <h3 class="text-3xl font-bold text-green-800">
-                        2
-                    </h3>
+                <div class="mb-8 grid gap-5 md:grid-cols-3">
+                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm text-slate-500">Status</p>
+                        <p class="mt-2 text-3xl font-bold text-emerald-700">{{ ucfirst($student->status) }}</p>
+                    </div>
+                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm text-slate-500">Total Nilai</p>
+                        <p class="mt-2 text-3xl font-bold text-emerald-700">{{ $statistics['total_grades'] }}</p>
+                    </div>
+                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm text-slate-500">Rata-rata Nilai</p>
+                        <p class="mt-2 text-3xl font-bold text-emerald-700">{{ number_format($statistics['average_final_grade'], 2) }}</p>
+                    </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">Rata-rata Nilai</p>
-                    <h3 class="text-3xl font-bold text-green-800">
-                        88
-                    </h3>
-                </div>
+                <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+                        <h3 class="text-lg font-semibold">Nilai Terbaru</h3>
+                        <a href="{{ route('student.grades.index') }}" class="text-sm font-medium text-emerald-700 hover:text-emerald-900">Lihat semua</a>
+                    </div>
 
-            </div>
-
-            <!-- Nilai -->
-            <div class="bg-white rounded-xl shadow p-6">
-
-                <h3 class="text-2xl font-bold mb-6">
-                    Nilai Terbaru
-                </h3>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-
-                        <thead class="border-b">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
                             <tr>
-                                <th class="text-left p-3">Mata Pelajaran</th>
-                                <th class="text-left p-3">Semester</th>
-                                <th class="text-left p-3">Nilai</th>
+                                <th class="px-5 py-3 text-left text-sm font-semibold">Mata Pelajaran</th>
+                                <th class="px-5 py-3 text-left text-sm font-semibold">Tutor</th>
+                                <th class="px-5 py-3 text-left text-sm font-semibold">Semester</th>
+                                <th class="px-5 py-3 text-left text-sm font-semibold">Nilai Akhir</th>
                             </tr>
                         </thead>
-
-                        <tbody>
-                            @forelse ($grades as $grade)
-                                <tr class="border-b hover:bg-gray-50">
-
-                                    <td class="p-3">
-                                        {{ $grade->subject_name ?? '-' }}
-                                    </td>
-
-                                    <td class="p-3">
-                                        {{ $grade->semester ?? '-' }}
-                                    </td>
-
-                                    <td class="p-3">
-                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                                            {{ $grade->final_grade ?? '-' }}
-                                        </span>
-                                    </td>
-
+                        <tbody class="divide-y divide-slate-100">
+                            @forelse ($latestGrades as $grade)
+                                <tr>
+                                    <td class="px-5 py-4 font-medium">{{ $grade->subject?->name ?? '-' }}</td>
+                                    <td class="px-5 py-4 text-sm text-slate-600">{{ $grade->tutor?->user?->name ?? '-' }}</td>
+                                    <td class="px-5 py-4 text-sm text-slate-600">{{ $grade->semester }}</td>
+                                    <td class="px-5 py-4"><span class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">{{ $grade->final_grade ?? '-' }}</span></td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="3"
-                                        class="p-6 text-center text-gray-500">
-                                        Belum ada data nilai.
-                                    </td>
-                                </tr>
+                                <tr><td colspan="4" class="px-5 py-8 text-center text-sm text-slate-500">Belum ada data nilai.</td></tr>
                             @endforelse
                         </tbody>
-
                     </table>
-                </div>
-
-            </div>
-
-        </main>
-
+                </section>
+            </main>
+        </div>
     </div>
-
 </body>
 </html>

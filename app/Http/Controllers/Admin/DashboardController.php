@@ -49,7 +49,7 @@ class DashboardController extends Controller
             ->pluck('total', 'registration_type');
 
         $ppdbType = [
-            'bop'     => $ppdbType['bop'] ?? 0,
+            'bop'     => $ppdbType['BOP'] ?? 0,
             'mandiri' => $ppdbType['mandiri'] ?? 0,
         ];
 

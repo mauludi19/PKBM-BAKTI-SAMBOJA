@@ -26,6 +26,8 @@ return new class extends Migration
 
             $table->string('full_name');
 
+            $table->string('nisn', 20);
+
             $table->string('nik', 20);
 
             $table->string('birth_place');

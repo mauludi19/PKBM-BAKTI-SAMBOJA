@@ -3,222 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Tutor - PKBM Bakti Samboja</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
+<body class="bg-slate-100 text-slate-900">
+    <div class="min-h-screen lg:flex">
+        <aside class="bg-emerald-950 text-white lg:min-h-screen lg:w-72">
+            <div class="border-b border-white/10 px-6 py-5">
+                <p class="text-sm text-emerald-200">PKBM Bakti Samboja</p>
+                <h1 class="text-xl font-semibold">Tutor Panel</h1>
+            </div>
 
-    @php
-        use Illuminate\Support\Facades\DB;
-        use Illuminate\Support\Facades\Schema;
-
-        $grades = Schema::hasTable('tutor_grades')
-            ? DB::table('tutor_grades')
-                ->leftJoin('students', 'tutor_grades.student_id', '=', 'students.id')
-                ->leftJoin('users', 'students.user_id', '=', 'users.id')
-                ->leftJoin('subjects', 'tutor_grades.subject_id', '=', 'subjects.id')
-                ->select(
-                    'users.name as student_name',
-                    'subjects.name as subject_name',
-                    'tutor_grades.final_grade'
-                )
-                ->latest('tutor_grades.created_at')
-                ->take(5)
-                ->get()
-            : collect();
-
-        $subjects = Schema::hasTable('subjects')
-            ? DB::table('subjects')->take(5)->get()
-            : collect();
-    @endphp
-
-    <div class="flex min-h-screen">
-
-        <!-- Sidebar -->
-        <aside class="w-64 bg-green-900 text-white p-6">
-
-            <h1 class="text-2xl font-bold mb-10">
-                Tutor Panel
-            </h1>
-
-            <nav class="space-y-4">
-
-                <a href="/tutor/dashboard"
-                   class="block bg-green-700 px-4 py-3 rounded-lg">
-                    Dashboard
-                </a>
-
-                <a href="/students"
-                   class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    Data Siswa
-                </a>
-
-                <a href="/"
-                   class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    Home
-                </a>
-
+            <nav class="space-y-1 px-4 py-5">
+                <a href="{{ route('tutor.dashboard') }}" class="block rounded-md bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white">Dashboard</a>
+                <a href="{{ route('tutor.grades.index') }}" class="block rounded-md px-4 py-2.5 text-sm font-medium text-emerald-50 hover:bg-white/10">Nilai Siswa</a>
+                <a href="{{ route('home') }}" class="block rounded-md px-4 py-2.5 text-sm font-medium text-emerald-50 hover:bg-white/10">Halaman Publik</a>
             </nav>
-
         </aside>
 
-        <!-- Main -->
-        <main class="flex-1 p-10">
+        <div class="min-w-0 flex-1">
+            <header class="border-b border-slate-200 bg-white">
+                <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
+                    <div>
+                        <p class="text-sm text-slate-500">Akademik tutor</p>
+                        <h2 class="text-2xl font-semibold tracking-tight">Dashboard Tutor</h2>
+                    </div>
 
-            <div class="mb-10">
-                <h2 class="text-4xl font-bold">
-                    Dashboard Tutor
-                </h2>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="rounded-md border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50">Keluar</button>
+                    </form>
+                </div>
+            </header>
 
-                <p class="text-gray-600">
-                    Kelola nilai dan mata pelajaran siswa
-                </p>
-            </div>
-
-            <!-- Statistik -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">
-                        Mata Pelajaran
-                    </p>
-
-                    <h3 class="text-3xl font-bold text-green-800">
-                        {{ $subjects->count() }}
-                    </h3>
+            <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                <div class="mb-8 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                    <p class="text-sm font-medium text-emerald-700">Selamat datang</p>
+                    <h3 class="mt-1 text-2xl font-semibold">{{ $tutor->user?->name }}</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-600">Kelola nilai siswa berdasarkan mata pelajaran yang Anda ampu.</p>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">
-                        Nilai Diinput
-                    </p>
-
-                    <h3 class="text-3xl font-bold text-green-800">
-                        {{ $grades->count() }}
-                    </h3>
+                <div class="mb-8 grid gap-5 md:grid-cols-3">
+                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm text-slate-500">Mata Pelajaran</p>
+                        <p class="mt-2 text-3xl font-bold text-emerald-700">{{ $statistics['total_subjects'] }}</p>
+                    </div>
+                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm text-slate-500">Nilai Diinput</p>
+                        <p class="mt-2 text-3xl font-bold text-emerald-700">{{ $statistics['total_grades'] }}</p>
+                    </div>
+                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm text-slate-500">Siswa Dinilai</p>
+                        <p class="mt-2 text-3xl font-bold text-emerald-700">{{ $statistics['total_students'] }}</p>
+                    </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">
-                        Status Tutor
-                    </p>
-
-                    <h3 class="text-3xl font-bold text-green-800">
-                        Aktif
-                    </h3>
-                </div>
-
-            </div>
-
-            <!-- Mata Pelajaran -->
-            <div class="bg-white rounded-xl shadow p-6 mb-10">
-
-                <h3 class="text-2xl font-bold mb-6">
-                    Mata Pelajaran
-                </h3>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                    @forelse ($subjects as $subject)
-
-                        <div class="border rounded-xl p-5 hover:bg-gray-50">
-                            <h4 class="font-bold text-lg">
-                                {{ $subject->name }}
-                            </h4>
-
-                            <p class="text-gray-500 mt-2">
-                                Kode:
-                                {{ $subject->code }}
-                            </p>
+                <div class="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+                    <section class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                        <div class="mb-5 flex items-center justify-between gap-3">
+                            <h3 class="text-lg font-semibold">Mata Pelajaran</h3>
+                            <a href="{{ route('tutor.grades.create') }}" class="rounded-md bg-emerald-700 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-800">Input Nilai</a>
                         </div>
 
-                    @empty
-
-                        <p class="text-gray-500">
-                            Belum ada mata pelajaran.
-                        </p>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
-            <!-- Nilai Terbaru -->
-            <div class="bg-white rounded-xl shadow p-6">
-
-                <h3 class="text-2xl font-bold mb-6">
-                    Nilai Terbaru
-                </h3>
-
-                <div class="overflow-x-auto">
-
-                    <table class="w-full">
-
-                        <thead class="border-b">
-                            <tr>
-                                <th class="text-left p-3">
-                                    Nama Siswa
-                                </th>
-
-                                <th class="text-left p-3">
-                                    Mata Pelajaran
-                                </th>
-
-                                <th class="text-left p-3">
-                                    Nilai
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            @forelse ($grades as $grade)
-
-                                <tr class="border-b hover:bg-gray-50">
-
-                                    <td class="p-3">
-                                        {{ $grade->student_name ?? '-' }}
-                                    </td>
-
-                                    <td class="p-3">
-                                        {{ $grade->subject_name ?? '-' }}
-                                    </td>
-
-                                    <td class="p-3">
-
-                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                                            {{ $grade->final_grade ?? '-' }}
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
+                        <div class="grid gap-3">
+                            @forelse ($subjects as $subject)
+                                <div class="rounded-md border border-slate-200 px-4 py-3">
+                                    <p class="font-medium">{{ $subject->name }}</p>
+                                    <p class="mt-1 text-sm text-slate-500">Kode: {{ $subject->code }}</p>
+                                </div>
                             @empty
-
-                                <tr>
-                                    <td colspan="3"
-                                        class="p-6 text-center text-gray-500">
-
-                                        Belum ada data nilai.
-
-                                    </td>
-                                </tr>
-
+                                <p class="rounded-md border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-500">Belum ada mata pelajaran yang ditugaskan.</p>
                             @endforelse
+                        </div>
+                    </section>
 
-                        </tbody>
+                    <section class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                        <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+                            <h3 class="text-lg font-semibold">Nilai Terbaru</h3>
+                            <a href="{{ route('tutor.grades.index') }}" class="text-sm font-medium text-emerald-700 hover:text-emerald-900">Lihat semua</a>
+                        </div>
 
-                    </table>
-
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-5 py-3 text-left text-sm font-semibold">Siswa</th>
+                                    <th class="px-5 py-3 text-left text-sm font-semibold">Mapel</th>
+                                    <th class="px-5 py-3 text-left text-sm font-semibold">Nilai</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @forelse ($latestGrades as $grade)
+                                    <tr>
+                                        <td class="px-5 py-4 font-medium">{{ $grade->student?->user?->name ?? '-' }}</td>
+                                        <td class="px-5 py-4 text-sm text-slate-600">{{ $grade->subject?->name ?? '-' }}</td>
+                                        <td class="px-5 py-4"><span class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">{{ $grade->final_grade ?? '-' }}</span></td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="3" class="px-5 py-8 text-center text-sm text-slate-500">Belum ada data nilai.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </section>
                 </div>
-
-            </div>
-
-        </main>
-
+            </main>
+        </div>
     </div>
-
 </body>
 </html>

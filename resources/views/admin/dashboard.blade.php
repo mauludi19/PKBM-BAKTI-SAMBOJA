@@ -1,155 +1,90 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - PKBM Bakti Samboja</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+@extends('layouts.admin')
 
-    @php
-        use Illuminate\Support\Facades\DB;
-        use Illuminate\Support\Facades\Schema;
+@section('title', 'Dashboard Admin')
+@section('page-title', 'Dashboard Admin')
+@section('eyebrow', 'Ringkasan sistem')
 
-        $totalStudents = Schema::hasTable('students')
-            ? DB::table('students')->count()
-            : 0;
-
-        $totalTutors = Schema::hasTable('tutors')
-            ? DB::table('tutors')->count()
-            : 0;
-
-        $totalPPDB = Schema::hasTable('ppdb_registrations')
-            ? DB::table('ppdb_registrations')->count()
-            : 0;
-
-        $latestStudents = Schema::hasTable('students')
-            ? DB::table('students')
-                ->leftJoin('users', 'students.user_id', '=', 'users.id')
-                ->select('students.*', 'users.name')
-                ->latest('students.created_at')
-                ->take(5)
-                ->get()
-            : collect();
-    @endphp
-
-    <div class="flex min-h-screen">
-
-        <!-- Sidebar -->
-        <aside class="w-64 bg-green-900 text-white p-6">
-            <h1 class="text-2xl font-bold mb-10">PKBM Admin</h1>
-
-            <nav class="space-y-4">
-                <a href="/admin/dashboard" class="block bg-green-700 px-4 py-3 rounded-lg">
-                    Dashboard
-                </a>
-
-                <a href="/students" class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    Data Siswa
-                </a>
-
-                <a href="/tutors" class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    Data Tutor
-                </a>
-
-                <a href="/ppdb/create" class="block hover:bg-green-700 px-4 py-3 rounded-lg">
-                    PPDB
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Main -->
-        <main class="flex-1 p-10">
-
-            <div class="mb-10">
-                <h2 class="text-4xl font-bold">Dashboard Admin</h2>
-                <p class="text-gray-600">Selamat datang di sistem PKBM Bakti Samboja</p>
+@section('content')
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        @foreach ([
+            'Siswa' => $statistics['total_students'] ?? 0,
+            'Tutor' => $statistics['total_tutors'] ?? 0,
+            'Users' => $statistics['total_users'] ?? 0,
+            'PPDB' => $statistics['total_ppdb'] ?? 0,
+            'Berita' => $statistics['total_news'] ?? 0,
+        ] as $label => $value)
+            <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                <p class="text-sm text-slate-500">{{ $label }}</p>
+                <p class="mt-2 text-3xl font-semibold">{{ number_format($value) }}</p>
             </div>
-
-            <!-- Statistik -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">Total Siswa</p>
-                    <h3 class="text-4xl font-bold text-green-800">
-                        {{ $totalStudents }}
-                    </h3>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">Total Tutor</p>
-                    <h3 class="text-4xl font-bold text-green-800">
-                        {{ $totalTutors }}
-                    </h3>
-                </div>
-
-                <div class="bg-white p-6 rounded-xl shadow">
-                    <p class="text-gray-500 mb-2">Pendaftaran PPDB</p>
-                    <h3 class="text-4xl font-bold text-green-800">
-                        {{ $totalPPDB }}
-                    </h3>
-                </div>
-
-            </div>
-
-            <!-- Siswa Terbaru -->
-            <div class="bg-white rounded-xl shadow p-6">
-
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold">Siswa Terbaru</h3>
-
-                    <a href="/students"
-                       class="text-green-700 font-semibold">
-                        Lihat Semua
-                    </a>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-
-                        <thead class="border-b">
-                            <tr>
-                                <th class="text-left p-3">Nama</th>
-                                <th class="text-left p-3">NISN</th>
-                                <th class="text-left p-3">Status</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @forelse ($latestStudents as $student)
-                                <tr class="border-b hover:bg-gray-50">
-                                    <td class="p-3">
-                                        {{ $student->name ?? '-' }}
-                                    </td>
-
-                                    <td class="p-3">
-                                        {{ $student->nisn ?? '-' }}
-                                    </td>
-
-                                    <td class="p-3">
-                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                                            {{ ucfirst($student->status ?? 'aktif') }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="3" class="p-6 text-center text-gray-500">
-                                        Belum ada data siswa.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-
-                    </table>
-                </div>
-
-            </div>
-
-        </main>
-
+        @endforeach
     </div>
 
-</body>
-</html>
+    <div class="mt-6 grid gap-6 lg:grid-cols-3">
+        <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 class="font-semibold">Tahun Ajaran Aktif</h3>
+            <p class="mt-3 text-2xl font-semibold text-emerald-700">
+                {{ $activeAcademicYear?->year ?? 'Belum ditentukan' }}
+            </p>
+            <a href="{{ route('admin.academic-years.index') }}" class="mt-4 inline-flex text-sm font-medium text-emerald-700 hover:text-emerald-900">Kelola tahun ajaran</a>
+        </section>
+
+        <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 class="font-semibold">Status PPDB</h3>
+            <div class="mt-4 space-y-2 text-sm">
+                <div class="flex justify-between"><span>Pending</span><strong>{{ $ppdbStatus['pending'] ?? 0 }}</strong></div>
+                <div class="flex justify-between"><span>Disetujui</span><strong>{{ $ppdbStatus['approved'] ?? 0 }}</strong></div>
+                <div class="flex justify-between"><span>Ditolak</span><strong>{{ $ppdbStatus['rejected'] ?? 0 }}</strong></div>
+            </div>
+        </section>
+
+        <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 class="font-semibold">Jenis Pendaftaran</h3>
+            <div class="mt-4 space-y-2 text-sm">
+                <div class="flex justify-between"><span>BOP</span><strong>{{ $ppdbType['bop'] ?? 0 }}</strong></div>
+                <div class="flex justify-between"><span>Mandiri</span><strong>{{ $ppdbType['mandiri'] ?? 0 }}</strong></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-2">
+        <section class="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+                <h3 class="font-semibold">PPDB Terbaru</h3>
+                <a href="{{ route('admin.ppdb.index') }}" class="text-sm font-medium text-emerald-700">Lihat semua</a>
+            </div>
+            <div class="divide-y divide-slate-100">
+                @forelse ($latestRegistrations as $registration)
+                    <a href="{{ route('admin.ppdb.show', $registration) }}" class="block px-5 py-4 hover:bg-slate-50">
+                        <div class="flex justify-between gap-4">
+                            <p class="font-medium">{{ $registration->full_name }}</p>
+                            <span class="text-sm text-slate-500">{{ ucfirst($registration->status) }}</span>
+                        </div>
+                        <p class="text-sm text-slate-500">{{ $registration->email }}</p>
+                    </a>
+                @empty
+                    <p class="px-5 py-6 text-sm text-slate-500">Belum ada pendaftaran PPDB.</p>
+                @endforelse
+            </div>
+        </section>
+
+        <section class="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div class="border-b border-slate-200 px-5 py-4">
+                <h3 class="font-semibold">User Terbaru</h3>
+            </div>
+            <div class="divide-y divide-slate-100">
+                @forelse ($latestUsers as $user)
+                    <a href="{{ route('admin.users.show', $user) }}" class="block px-5 py-4 hover:bg-slate-50">
+                        <div class="flex justify-between gap-4">
+                            <p class="font-medium">{{ $user->name }}</p>
+                            <span class="text-sm text-slate-500">{{ ucfirst($user->role) }}</span>
+                        </div>
+                        <p class="text-sm text-slate-500">{{ $user->email }}</p>
+                    </a>
+                @empty
+                    <p class="px-5 py-6 text-sm text-slate-500">Belum ada user.</p>
+                @endforelse
+            </div>
+        </section>
+    </div>
+@endsection

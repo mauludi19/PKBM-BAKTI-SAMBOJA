@@ -35,7 +35,7 @@ class AcademicYearController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:50|unique:academic_years,name',
+            'year' => 'required|string|max:50|unique:academic_years,year',
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -46,7 +46,7 @@ class AcademicYearController extends Controller
         }
 
         AcademicYear::create([
-            'name' => $validated['name'],
+            'year' => $validated['year'],
             'is_active' => $request->boolean('is_active'),
         ]);
 
@@ -85,7 +85,7 @@ class AcademicYearController extends Controller
         AcademicYear $academicYear
     ) {
         $validated = $request->validate([
-            'name' => 'required|string|max:50|unique:academic_years,name,' . $academicYear->id,
+            'year' => 'required|string|max:50|unique:academic_years,year,' . $academicYear->id,
             'is_active' => 'nullable|boolean',
         ]);
 
@@ -96,7 +96,7 @@ class AcademicYearController extends Controller
         }
 
         $academicYear->update([
-            'name' => $validated['name'],
+            'year' => $validated['year'],
             'is_active' => $request->boolean('is_active'),
         ]);
 

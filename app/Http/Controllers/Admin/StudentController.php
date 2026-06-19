@@ -133,12 +133,12 @@ class StudentController extends Controller
             'name'          => 'required|string|max:255',
 
             'email'         => 'required|email|unique:users,email,' .
-                                $student->user_id,
+                $student->user_id,
 
             'package_id'    => 'required|exists:packages,id',
 
             'nisn'          => 'required|string|max:50|unique:students,nisn,' .
-                                $student->id,
+                $student->id,
 
             'nik'           => 'nullable|string|max:30',
             'gender'        => 'required|in:L,P',

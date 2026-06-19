@@ -37,12 +37,12 @@ class PpdbController extends Controller
 
             'full_name' => 'required|string|max:255',
             'nik' => 'required|string|max:20',
-            'nisn' => 'nullable|string|max:20',
+            'nisn' => 'required|string|max:20',
 
             'birth_place' => 'required|string|max:100',
             'birth_date' => 'required|date',
 
-            'gender' => 'required|in:male,female',
+            'gender' => 'required|in:L,P',
 
             'last_education' => 'required|string|max:255',
 
@@ -81,6 +81,14 @@ class PpdbController extends Controller
 
         return redirect()
             ->route('ppdb.success');
+    }
+
+    /**
+     * HALAMAN SUKSES
+     */
+    public function success()
+    {
+        return view('ppdb.success');
     }
 
     /**

@@ -35,8 +35,8 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'code' => 'required|string|max:50|unique:subjects,code',
             'name' => 'required|string|max:100|unique:subjects,name',
-            'description' => 'nullable|string',
         ]);
 
         Subject::create($validated);
@@ -76,8 +76,8 @@ class SubjectController extends Controller
         Subject $subject
     ) {
         $validated = $request->validate([
+            'code' => 'required|string|max:50|unique:subjects,code,' . $subject->id,
             'name' => 'required|string|max:100|unique:subjects,name,' . $subject->id,
-            'description' => 'nullable|string',
         ]);
 
         $subject->update($validated);

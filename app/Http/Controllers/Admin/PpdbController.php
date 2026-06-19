@@ -19,8 +19,8 @@ class PpdbController extends Controller
             'academicYear',
             'package'
         ])
-        ->latest()
-        ->get();
+            ->latest()
+            ->get();
 
         return view('admin.ppdb.index', compact('registrations'));
     }
@@ -65,7 +65,7 @@ class PpdbController extends Controller
             'user_id' => $user->id,
             'package_id' => $ppdb->package_id,
 
-            'nisn' => null,
+            'nisn' => $ppdb->nisn,
 
             'nik' => $ppdb->nik,
             'gender' => $ppdb->gender,

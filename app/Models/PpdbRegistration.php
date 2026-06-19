@@ -13,6 +13,7 @@ class PpdbRegistration extends Model
 
         'email',
         'full_name',
+        'nisn',
         'nik',
 
         'birth_place',

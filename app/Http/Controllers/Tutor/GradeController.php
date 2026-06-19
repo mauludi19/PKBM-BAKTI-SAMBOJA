@@ -22,9 +22,9 @@ class GradeController extends Controller
             'student.user',
             'subject'
         ])
-        ->where('tutor_id', $tutor->id)
-        ->latest()
-        ->get();
+            ->where('tutor_id', $tutor->id)
+            ->latest()
+            ->get();
 
         return view(
             'tutor.grades.index',

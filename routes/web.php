@@ -27,6 +27,8 @@ use App\Http\Controllers\Admin\TutorController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\PpdbController as AdminPpdbController;
 use App\Http\Controllers\Admin\TutorSubjectController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +119,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('subjects', SubjectController::class);
         Route::resource('tutors', TutorController::class);
         Route::resource('students', StudentController::class);
+        Route::resource('news', AdminNewsController::class);
+        Route::resource('pages', AdminPageController::class);
 
         /*
         | PPDB ADMIN

@@ -47,6 +47,8 @@ Kategori Paket Pendidikan yang tersedia:
 
 **Alur:** Pengunjung membuka halaman profil pengajar, sistem melakukan kueri data dari repositori tutor, lalu menampilkan kartu informasi berisi nama, foto, dan bidang keahlian tutor.
 
+![Pratinjau Admin](../screenshot/admin.png)
+
 **Route dan kode terkait:**
 
 - `GET /tutor`

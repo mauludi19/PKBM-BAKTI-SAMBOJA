@@ -182,6 +182,8 @@ Melakukan validasi berkas pendaftaran masuk calon siswa baru dan memisahkan kuot
 - Path: `/admin/verifikasi-ppdb`
 
 ---
+![Pratinjau admin](../screenshot/admin.png)
+
 
 ## Panel Tutor
 

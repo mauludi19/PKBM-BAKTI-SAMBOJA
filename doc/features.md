@@ -26,6 +26,8 @@ Website PKBM Bakti Samboja melayani tiga aktor utama: admin lembaga, tutor (tena
 
 **Alur:** Pengunjung membuka halaman data siswa, sistem memfilter dan menampilkan daftar nama siswa berdasarkan kategori Paket A, Paket B, atau Paket C dengan pagination.
 
+![Pratinjau Paket](../screenshot/paket.png)
+
 **Route dan kode terkait:**
 
 - `GET /data-siswa`

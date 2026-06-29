@@ -24,9 +24,8 @@
                 <a href="{{ route('contact') }}" class="font-medium text-gray-700 hover:text-green-700">Kontak</a>
             </div>
 
-            <div class="hidden items-center gap-3 md:flex">
-                <a href="{{ route('login') }}" class="rounded-lg border border-green-700 px-5 py-2 font-semibold text-green-700 hover:bg-green-50">Login</a>
-                <a href="{{ route('register') }}" class="rounded-lg bg-green-700 px-5 py-2 font-semibold text-white hover:bg-green-800">Daftar</a>
+            <div class="hidden items-center md:flex md:justify-end md:ml-auto">
+                <a href="{{ route('login') }}" class="rounded-lg bg-green-700 px-5 py-2 font-semibold text-white hover:bg-green-800">Login</a>
             </div>
         </div>
     </nav>

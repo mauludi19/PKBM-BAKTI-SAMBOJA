@@ -47,7 +47,6 @@ Kategori Paket Pendidikan yang tersedia:
 
 **Alur:** Pengunjung membuka halaman profil pengajar, sistem melakukan kueri data dari repositori tutor, lalu menampilkan kartu informasi berisi nama, foto, dan bidang keahlian tutor.
 
-![Pratinjau Admin](../screenshot/admin.png)
 
 **Route dan kode terkait:**
 
@@ -95,6 +94,8 @@ Kategori Paket Pendidikan yang tersedia:
 **Aktor:** Calon siswa baru (pengunjung umum).
 
 **Alur:** Pendaftar mengisi form identitas, memilih tahun ajaran, dan menentukan kategori jalur masuk. Data yang tersimpan akan berstatus `pending` sampai diverifikasi oleh admin.
+
+![Pratinjau Pendaftaran](../screenshot/pendaftaran.png)
 
 **Route dan kode terkait:**
 

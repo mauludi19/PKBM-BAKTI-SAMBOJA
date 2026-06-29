@@ -158,6 +158,7 @@ Kategori PPDB yang dikelompokkan:
 **Tujuan:** Menjadi pusat kendali operasional, manajemen akademik, dan pengelolaan konten website.
 
 **Aktor:** Admin aktif.
+![Pratinjau admin](../screenshot/admin.png)
 
 **Path:** `/admin`
 
@@ -182,7 +183,6 @@ Melakukan validasi berkas pendaftaran masuk calon siswa baru dan memisahkan kuot
 - Path: `/admin/verifikasi-ppdb`
 
 ---
-![Pratinjau admin](../screenshot/admin.png)
 
 
 ## Panel Tutor

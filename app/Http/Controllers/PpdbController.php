@@ -82,15 +82,6 @@ class PpdbController extends Controller
         return redirect()
             ->route('ppdb.success');
     }
-
-    /**
-     * HALAMAN SUKSES
-     */
-    public function success()
-    {
-        return view('ppdb.success');
-    }
-
     /**
      * HALAMAN SUKSES
      */

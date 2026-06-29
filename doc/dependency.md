@@ -17,31 +17,31 @@ Versi pada tabel diambil dari lock file dan instalasi proyek saat ini berdasarka
 
 | Package | Fungsi | Versi terpasang | Risiko/Perhatian |
 | --- | --- | --- | --- |
-| `phpunit/phpunit` | Framework automated testing | ^12.5.12 | Test database memerlukan `pdo_sqlite` aktif |
-| `phpstan/phpstan` | Tool static analysis kode PHP | ^2.1 | Pastikan level pengecekan tidak memicu false positive |
-| `laravel/pint` | Formatter gaya kode PHP | ^1.29 | Jalankan perintah linting sebelum melakukan commit |
-| `laravel/breeze` | Scaffolding autentikasi awal | ^2.4 | Digunakan untuk basis otentikasi login bersama |
-| `laravel/pail` | Pembaca log Laravel di CLI | ^1.2.5 | Jangan mengekspos log sensitif pada environment live |
-| `laravel/pao` | Output test untuk agent | ^1.0.6 | Pada sebagian lingkungan Windows perlu parameter penyesuaian |
-| `fakerphp/faker` | Penghasil data tiruan (seeder) | ^1.23 | Data siswa dan tutor yang dihasilkan hanya bersifat sintetis |
-| `mockery/mockery` | Mock object untuk unit testing | ^1.6 | Mock berlebihan dapat membuat unit test menjadi rapuh |
-| `nunomaduro/collision` | Tampilan error detail di CLI | ^8.6 | Dependency khusus lingkup development saja |
+| `phpunit/phpunit` | Framework automated testing | 12.5.12 | Test database memerlukan `pdo_sqlite` aktif |
+| `phpstan/phpstan` | Tool static analysis kode PHP | 2.1 | Pastikan level pengecekan tidak memicu false positive |
+| `laravel/pint` | Formatter gaya kode PHP | 1.29 | Jalankan perintah linting sebelum melakukan commit |
+| `laravel/breeze` | Scaffolding autentikasi awal | 2.4 | Digunakan untuk basis otentikasi login bersama |
+| `laravel/pail` | Pembaca log Laravel di CLI | 1.2.5 | Jangan mengekspos log sensitif pada environment live |
+| `laravel/pao` | Output test untuk agent | 1.0.6 | Pada sebagian lingkungan Windows perlu parameter penyesuaian |
+| `fakerphp/faker` | Penghasil data tiruan (seeder) | 1.23 | Data siswa dan tutor yang dihasilkan hanya bersifat sintetis |
+| `mockery/mockery` | Mock object untuk unit testing | 1.6 | Mock berlebihan dapat membuat unit test menjadi rapuh |
+| `nunomaduro/collision` | Tampilan error detail di CLI | 8.6 | Dependency khusus lingkup development saja |
 
 ## Dependency Frontend
 
 | Package | Fungsi | Versi terpasang | Risiko/Perhatian |
 | --- | --- | --- | --- |
-| `vite` | Build tool frontend utama | ^8.0.0 | Memerlukan Node.js yang kompatibel pada runner CI |
-| `laravel-vite-plugin` | Integrasi Laravel-Vite | ^3.1 | Build gagal jika entry point script tidak sesuai |
-| `tailwindcss` | Utility-first CSS framework | ^3.1.0 | Perubahan mayor berbeda dari konfigurasi versi di atasnya |
-| `@tailwindcss/vite` | Plugin Tailwind untuk Vite | ^4.0.0 | Perhatikan keselarasan versi build compiler |
-| `@tailwindcss/forms` | Normalisasi komponen form | ^0.5.2 | Style dapat memengaruhi input form bawaan Filament |
-| `alpinejs` | Interaksi frontend ringan | ^3.15.12 | Mengatur reaktivitas komponen mini di landing page |
-| `alpine` | Core framework script | ^0.2.1 | Jaga agar script global tidak tabrakan dengan alpinejs |
-| `axios` | HTTP Client untuk request AJAX | ^1.16.1 | Digunakan untuk fetch data asynchronous |
-| `autoprefixer` | Parsing CSS ke browser compatibility | ^10.4.2 | Memastikan tampilan CSS Tailwind rapi di semua browser |
-| `postcss` | Tool transformasi CSS dengan JS | ^8.4.31 | Diperlukan oleh Tailwind untuk memproses utility class |
-| `concurrently` | Menjalankan proses dev serentak | ^9.0.1 | Menjalankan `php artisan serve` dan `vite` bersamaan |
+| `vite` | Build tool frontend utama | 8.0.0 | Memerlukan Node.js yang kompatibel pada runner CI |
+| `laravel-vite-plugin` | Integrasi Laravel-Vite | 3.1 | Build gagal jika entry point script tidak sesuai |
+| `tailwindcss` | Utility-first CSS framework | 3.1.0 | Perubahan mayor berbeda dari konfigurasi versi di atasnya |
+| `@tailwindcss/vite` | Plugin Tailwind untuk Vite | 4.0.0 | Perhatikan keselarasan versi build compiler |
+| `@tailwindcss/forms` | Normalisasi komponen form | 0.5.2 | Style dapat memengaruhi input form bawaan Filament |
+| `alpinejs` | Interaksi frontend ringan | 3.15.12 | Mengatur reaktivitas komponen mini di landing page |
+| `alpine` | Core framework script | 0.2.1 | Jaga agar script global tidak tabrakan dengan alpinejs |
+| `axios` | HTTP Client untuk request AJAX | 1.16.1 | Digunakan untuk fetch data asynchronous |
+| `autoprefixer` | Parsing CSS ke browser compatibility | 10.4.2 | Memastikan tampilan CSS Tailwind rapi di semua browser |
+| `postcss` | Tool transformasi CSS dengan JS | 8.4.31 | Diperlukan oleh Tailwind untuk memproses utility class |
+| `concurrently` | Menjalankan proses dev serentak | 9.0.1 | Menjalankan `php artisan serve` dan `vite` bersamaan |
 
 ## Cara Instalasi
 

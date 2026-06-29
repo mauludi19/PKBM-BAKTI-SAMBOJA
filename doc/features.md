@@ -10,6 +10,8 @@ Website PKBM Bakti Samboja melayani tiga aktor utama: admin lembaga, tutor (tena
 
 **Alur:** Pengunjung membuka beranda, sistem mengambil data konten berita terbaru serta visi misi lembaga, lalu menampilkannya pada halaman utama.
 
+![Pratinjau Dashboard](../screenshot/dashboard.png)
+
 **Route dan kode terkait:**
 
 - `GET /`

@@ -14,7 +14,7 @@ Website PKBM Bakti Samboja melayani tiga aktor utama: admin lembaga, tutor (tena
 
 - `GET /`
 - `HomeController`
-- `resources/views/welcome.blade.php`
+- `resources/views/home.blade.php`
 
 ## Data Siswa per Kategori
 

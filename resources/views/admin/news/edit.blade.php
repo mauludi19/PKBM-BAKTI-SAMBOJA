@@ -78,7 +78,7 @@
                         <h3 class="font-semibold text-gray-900 mb-4">Status Publikasi</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer">
-                                <input type="checkbox" name="is_published" id="is_published"
+                                <input type="checkbox" name="is_published" id="is_published" value="1"
                                     class="w-4 h-4 text-green-600 rounded focus:ring-2 focus:ring-green-500"
                                     {{ old('is_published', $news->is_published) ? 'checked' : '' }}>
                                 <span class="text-sm font-medium text-gray-900">Publikasikan</span>

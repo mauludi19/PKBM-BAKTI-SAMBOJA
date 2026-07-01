@@ -29,7 +29,7 @@ Satu vocabulary domain mengurangi bug schema dan mempermudah validasi alur akade
 
 Seeder, autentikasi, dan akses panel memakai kontrak akun yang sama.
 
-**Bukti commit:** `eee22d6`, `2d1a6cc`.
+**Bukti commit:** `2d744a4 . f883c76`.
 
 ## Pemisahan Authorization ke Model Policy
 
@@ -53,7 +53,7 @@ Authorization harus berada pada lapisan domain Laravel dan dapat digunakan kemba
 
 Admin dan Tutor aktif mendapatkan aksi yang sesuai, sementara siswa atau akun pendaftaran yang belum disetujui (`pending`) ditolak. Admin juga tidak dapat menghapus akunnya sendiri melalui `UserPolicy`.
 
-**Bukti commit:** `bb03cbb`.
+**Bukti commit:** `c70658e`.
 
 ## Penggantian Konsep Pendaftaran ke PPDB
 
@@ -77,7 +77,7 @@ Struktur data pendaftaran menjadi lebih jelas: satu entitas registrasi wajib men
 
 Resource pendaftaran baru lebih konsisten dengan schema database dan relasi laporan bantuan operasional.
 
-**Bukti commit:** `6b1eca2`, `d339b10`.
+**Bukti commit:** `c70658e`.
 
 ## Pemisahan Panel Admin, Tutor, dan Siswa
 
@@ -105,7 +105,7 @@ Pemisahan panel mengurangi risiko modul admin dan form penginputan nilai terliha
 
 Struktur sekarang mendukung resource khusus aktor tanpa mencampur CRUD operasional admin. Saat ini panel siswa sudah memiliki resource `Nilai Saya` yang bersifat read-only.
 
-**Bukti commit:** `78194fe`.
+**Bukti commit:** `c70658e`.
 
 ## Penggunaan Form dan Table Class pada Resource Filament
 
@@ -158,7 +158,7 @@ Navigasi menu perlu mengikuti aktivitas alur kerja harian pengelola lembaga.
 
 Menu lebih terstruktur dan perpindahan halaman panel terasa lebih cepat.
 
-**Bukti commit:** `0515a5b`.
+**Bukti commit:** `60531bd`.
 
 ## Pengalihan Otomatis Setelah Pembuatan Data di Filament
 
@@ -182,7 +182,7 @@ Meningkatkan efisiensi navigasi bagi pengguna admin dan tutor.
 
 Pengalaman pengguna yang lebih mulus dan cepat pada seluruh CRUD di panel.
 
-**Bukti commit:** `672e9a8`.
+**Bukti commit:** `83f16df`.
 
 ## Perubahan Tipe Kolom registration_date
 
@@ -227,7 +227,6 @@ Kedua controller dapat dihapus pada refactoring berikutnya setelah dipastikan ti
 
 ## Rencana Refactoring Berikutnya
 
-- Menghapus method CRUD kosong pada `TutorController` di bagian publik atau menggantinya dengan controller single-action yang hanya menangani detail profil tutor.
 - Memberi return type pada seluruh method controller dan komponen Livewire.
 - Menambahkan service khusus untuk enkripsi dan penanganan dokumen pendukung jalur PPDB BOP (seperti KIP/SKTM).
 - Menambah cakupan automated test untuk authorization tiga panel, autentikasi multi-role, dan penguncian nilai.

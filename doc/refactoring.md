@@ -53,7 +53,7 @@ Authorization harus berada pada lapisan domain Laravel dan dapat digunakan kemba
 
 Admin dan Tutor aktif mendapatkan aksi yang sesuai, sementara siswa atau akun pendaftaran yang belum disetujui (`pending`) ditolak. Admin juga tidak dapat menghapus akunnya sendiri melalui `UserPolicy`.
 
-**Bukti commit:** `c70658e`.
+**Bukti commit:** `b9f23e2`.
 
 ## Penggantian Konsep Pendaftaran ke PPDB
 
@@ -77,7 +77,7 @@ Struktur data pendaftaran menjadi lebih jelas: satu entitas registrasi wajib men
 
 Resource pendaftaran baru lebih konsisten dengan schema database dan relasi laporan bantuan operasional.
 
-**Bukti commit:** `c70658e`.
+**Bukti commit:** `b9f23e2`.
 
 ## Pemisahan Panel Admin, Tutor, dan Siswa
 

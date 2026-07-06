@@ -43,7 +43,7 @@ class TutorController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
 
-            'nip' => 'nullable|string|max:50',
+            'npsn' => 'nullable|string|max:50',
             'gender' => 'required|in:L,P',
             'education' => 'nullable|string|max:255',
             'specialization' => 'nullable|string|max:255',
@@ -62,7 +62,7 @@ class TutorController extends Controller
 
             Tutor::create([
                 'user_id' => $user->id,
-                'nip' => $validated['nip'] ?? null,
+                'npsn' => $validated['npsn'] ?? null,
                 'gender' => $validated['gender'],
                 'education' => $validated['education'] ?? null,
                 'specialization' => $validated['specialization'] ?? null,
@@ -115,7 +115,7 @@ class TutorController extends Controller
             'email' => 'required|email|unique:users,email,' .
                 $tutor->user_id,
 
-            'nip' => 'nullable|string|max:50',
+            'npsn' => 'nullable|string|max:50',
             'gender' => 'required|in:L,P',
             'education' => 'nullable|string|max:255',
             'specialization' => 'nullable|string|max:255',
@@ -134,7 +134,7 @@ class TutorController extends Controller
             ]);
 
             $tutor->update([
-                'nip' => $validated['nip'] ?? null,
+                'npsn' => $validated['npsn'] ?? null,
                 'gender' => $validated['gender'],
                 'education' => $validated['education'] ?? null,
                 'specialization' => $validated['specialization'] ?? null,

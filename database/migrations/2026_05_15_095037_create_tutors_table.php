@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tutors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('nip')->nullable();
+            $table->string('npsn')->nullable();
             $table->enum('gender', ['L', 'P'])->nullable();
             $table->string('education')->nullable();
             $table->string('specialization')->nullable();

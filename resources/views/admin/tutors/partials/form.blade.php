@@ -10,7 +10,7 @@
         </div>
         <div>
             <label for="nip" class="block text-sm font-medium text-slate-700">NIP</label>
-            <input id="nip" name="nip" type="text" value="{{ old('nip', $tutor?->nip) }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-600 focus:ring-emerald-600">
+            <input id="nip" name="nip" type="text" value="{{ old('npsn', $tutor?->nip) }}" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-600 focus:ring-emerald-600">
         </div>
         <div>
             <label for="gender" class="block text-sm font-medium text-slate-700">Jenis Kelamin</label>

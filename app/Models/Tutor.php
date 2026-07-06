@@ -8,7 +8,7 @@ class Tutor extends Model
 {
     protected $fillable = [
         'user_id',
-        'nip',
+        'npsn',
         'gender',
         'education',
         'specialization',

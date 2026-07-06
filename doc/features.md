@@ -22,7 +22,7 @@ Website PKBM Bakti Samboja melayani tiga aktor utama, yaitu **Admin**, **Tutor**
 | Panel Siswa     | Siswa               | Akses nilai akademik pribadi                        |
 
 ---
-# Landing Page
+# Dashboard
 
 ### Tujuan
 

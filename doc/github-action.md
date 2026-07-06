@@ -227,21 +227,7 @@ Oleh karena itu, log workflow terakhir menjadi sumber informasi utama terkait ad
 
 ---
 
-## 15. Rekomendasi Pengembangan Selanjutnya
 
-### Penguatan Testing
-
-* Menambahkan Feature Test autentikasi Admin
-* Menambahkan Feature Test autentikasi Tutor
-* Menambahkan Feature Test autentikasi Siswa
-* Menambahkan redirect test berdasarkan role
-* Menambahkan CRUD Test fitur Input Nilai Siswa
-
-### Penguatan Security
-
-* Menambahkan Static Analysis
-* Menambahkan Secret Scanning
-* Menambahkan Policy Test pada seluruh Resource
 
 ### Quality Assurance
 

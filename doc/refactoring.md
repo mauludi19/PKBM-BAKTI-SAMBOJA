@@ -2,7 +2,7 @@
 
 Dokumen ini mencatat perubahan struktur yang meningkatkan konsistensi dan kemudahan pemeliharaan tanpa mengubah tujuan utama aplikasi Website PKBM Bakti Samboja.
 
-## Standardisasi Model, Factory, dan Seeder
+## 1. Standardisasi Model, Factory, dan Seeder
 
 **Sebelum**
 
@@ -31,7 +31,7 @@ Seeder, autentikasi, dan akses panel memakai kontrak akun yang sama.
 
 **Bukti commit:** `2d744a4 . f883c76`.
 
-## Pemisahan Authorization ke Model Policy
+## 2. Pemisahan Authorization ke Model Policy
 
 **Sebelum**
 
@@ -55,7 +55,7 @@ Admin dan Tutor aktif mendapatkan aksi yang sesuai, sementara siswa atau akun pe
 
 **Bukti commit:** `b9f23e2`.
 
-## Penggantian Konsep Pendaftaran ke PPDB
+## 3. Penggantian Konsep Pendaftaran ke PPDB
 
 **Sebelum**
 
@@ -79,7 +79,7 @@ Resource pendaftaran baru lebih konsisten dengan schema database dan relasi lapo
 
 **Bukti commit:** `b9f23e2`.
 
-## Pemisahan Panel Admin, Tutor, dan Siswa
+## 4. Pemisahan Panel Admin, Tutor, dan Siswa
 
 **Sebelum**
 
@@ -107,7 +107,7 @@ Struktur sekarang mendukung resource khusus aktor tanpa mencampur CRUD operasion
 
 **Bukti commit:** `c70658e`.
 
-## Penggunaan Form dan Table Class pada Resource Filament
+## 5. Penggunaan Form dan Table Class pada Resource Filament
 
 **Sebelum**
 
@@ -134,7 +134,7 @@ Setiap kelas memiliki satu tanggung jawab yang lebih jelas sesuai prinsip pembag
 
 CRUD akademik lebih mudah dikembangkan dan diuji secara terpisah.
 
-## Pengelompokan Navigasi dan SPA Filament
+## 6. Pengelompokan Navigasi dan SPA Filament
 
 **Sebelum**
 
@@ -160,7 +160,7 @@ Menu lebih terstruktur dan perpindahan halaman panel terasa lebih cepat.
 
 **Bukti commit:** `60531bd`.
 
-## Pengalihan Otomatis Setelah Pembuatan Data di Filament
+## 7. Pengalihan Otomatis Setelah Pembuatan Data di Filament
 
 **Sebelum**
 
@@ -184,7 +184,7 @@ Pengalaman pengguna yang lebih mulus dan cepat pada seluruh CRUD di panel.
 
 **Bukti commit:** `83f16df`.
 
-## Perubahan Tipe Kolom registration_date
+## 8. Perubahan Tipe Kolom registration_date
 
 **Sebelum**
 
@@ -208,7 +208,7 @@ Seluruh query dan form yang menampilkan data pendaftaran kini menyertakan inform
 
 **Bukti commit:** migrasi `2026_06_27_040243_alter_registration_date_column_on_registrations_table`.
 
-## Identifikasi Dead Code
+## 8. Identifikasi Dead Code
 
 **Temuan**
 
@@ -225,7 +225,7 @@ File tanpa fungsi menambah beban maintenance dan membingungkan tim pengembang ba
 
 Kedua controller dapat dihapus pada refactoring berikutnya setelah dipastikan tidak ada dependensi dari komponen lain.
 
-## Rencana Refactoring Berikutnya
+## 9. Rencana Refactoring Berikutnya
 
 - Memberi return type pada seluruh method controller dan komponen Livewire.
 - Menambahkan service khusus untuk enkripsi dan penanganan dokumen pendukung jalur PPDB BOP (seperti KIP/SKTM).

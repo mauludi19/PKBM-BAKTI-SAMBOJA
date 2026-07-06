@@ -2,7 +2,7 @@
 
 Dokumen ini menjelaskan pemasangan aplikasi Website PKBM Bakti Samboja untuk lingkungan pengembangan lokal.
 
-## Persyaratan Sistem
+## 1. Persyaratan Sistem
 
 | Komponen | Versi minimum/rekomendasi |
 | --- | --- |
@@ -15,9 +15,9 @@ Dokumen ini menjelaskan pemasangan aplikasi Website PKBM Bakti Samboja untuk lin
 
 Ekstensi PHP yang diperlukan antara lain `ctype`, `curl`, `dom`, `fileinfo`, `intl`, `mbstring`, `openssl`, `pdo_mysql`, `tokenizer`, `xml`, dan `zip`. Untuk menjalankan test dengan konfigurasi bawaan, aktifkan juga `pdo_sqlite`.
 
-## Langkah Instalasi
+## 2.Langkah Instalasi
 
-### 1. Clone repository
+### 2.1. Clone repository
 
 ```bash
 git@github.com:mauludi19/PKBM-BAKTI-SAMBOJA.git
@@ -28,7 +28,7 @@ Alternatif HTTPS:
 https://github.com/mauludi19/PKBM-BAKTI-SAMBOJA.git
 ```
 
-### 2. Install dependency
+### 2.2. Install dependency
 
 ```bash
 composer install
@@ -37,7 +37,7 @@ npm ci
 
 Gunakan `npm install` apabila `package-lock.json` belum tersedia.
 
-### 3. Setup environment
+### 2.3. Setup environment
 
 Pada Linux/macOS:
 
@@ -57,7 +57,7 @@ Kemudian buat application key:
 php artisan key:generate
 ```
 
-### 4. Setup database
+### 2.4. Setup database
 
 Buat database MySQL, misalnya `PKBM`, lalu atur `.env`:
 
@@ -89,7 +89,7 @@ Seeder menyediakan akun pengembangan:
 
 Kredensial ini hanya untuk pengembangan. Jangan digunakan pada production.
 
-### 5. Build aset
+### 2.5. Build aset
 
 ```bash
 npm run build
@@ -101,7 +101,7 @@ Untuk pengembangan dengan hot reload:
 npm run dev
 ```
 
-### 6. Menjalankan aplikasi
+### 2.6. Menjalankan aplikasi
 
 Cara paling lengkap:
 
@@ -135,7 +135,7 @@ Catatan panel user:
 
 -Perubahan nama, email, NISN, NIDN, dan Kelas Paket harus dilakukan melalui admin.
 
-## Menjalankan Test
+## 3. Menjalankan Test
 
 ```bash
 php artisan test --compact
@@ -144,7 +144,7 @@ php artisan test --compact
 Konfigurasi test menggunakan SQLite in-memory. Pastikan ekstensi
 `pdo_sqlite` aktif pada PHP CLI.
 
-## Troubleshooting
+## 4. Troubleshooting
 
 ### Perubahan frontend tidak tampil
 

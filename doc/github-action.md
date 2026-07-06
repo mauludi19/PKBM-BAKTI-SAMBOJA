@@ -1,68 +1,82 @@
-# Dokumentasi GitHub Actions
+# GitHub Actions CI Documentation
 
-## Workflow yang Digunakan
+## 1. Ringkasan
 
-Website PKBM Bakti Samboja menggunakan workflow Continuous Integration (CI) untuk memverifikasi dependency, menyiapkan database, membangun aset frontend, dan menjalankan test secara otomatis.
+Website PKBM Bakti Samboja menggunakan workflow Continuous Integration (CI) untuk melakukan validasi otomatis terhadap dependency, database, build frontend, serta pengujian aplikasi sebelum perubahan direview atau digabungkan ke branch utama.
 
-## Lokasi File
+---
+
+## 2. Lokasi Workflow
 
 ```text
 .github/workflows/ci.yml
-
 ```
 
-# GitHub Actions - Continuous Integration (CI)
+---
 
-## Trigger Workflow
+## 3. Trigger Workflow
 
-Workflow akan berjalan pada kondisi berikut:
+Workflow akan dijalankan ketika:
 
-- Push ke semua branch
-- Pull Request menuju branch `main`
-- Dijalankan secara manual melalui `workflow_dispatch`
+1. Terjadi **push** ke semua branch.
+2. Terjadi **pull request** menuju branch `main`.
+3. Workflow dijalankan secara manual menggunakan `workflow_dispatch`.
 
 ---
 
-# Environment
+## 4. Environment yang Digunakan
 
-| Komponen | Konfigurasi |
-|----------|-------------|
-| Runner | Ubuntu Latest |
-| PHP | 8.4 |
-| Node.js | 22 |
-| Database Test | SQLite (temporary database pada GitHub Runner) |
-| Dependency PHP | Composer (`composer.lock`) |
-| Dependency Frontend | npm (`package-lock.json`) |
-
----
-
-# Tahapan Workflow
-
-Workflow menjalankan tahapan berikut secara berurutan:
-
-1. Checkout source code
-2. Setup PHP beserta extension yang diperlukan
-3. Setup Node.js
-4. Validasi konfigurasi Composer
-5. Install dependency Composer berdasarkan `composer.lock`
-6. Audit kerentanan dependency PHP
-7. Install dependency npm berdasarkan `package-lock.json`
-8. Audit kerentanan dependency frontend (High/Critical)
-9. Membuat file `.env`
-10. Generate Laravel Application Key
-11. Membuat database SQLite
-12. Menjalankan migration
-13. Build asset menggunakan Vite
-14. Memastikan cache production Laravel dapat dibuat:
-    - Config Cache
-    - Event Cache
-    - Route Cache
-    - View Cache
-15. Menjalankan seluruh test menggunakan Pest
+| No | Komponen            | Konfigurasi                                    |
+| -- | ------------------- | ---------------------------------------------- |
+| 1  | Runner              | Ubuntu Latest                                  |
+| 2  | PHP                 | 8.4                                            |
+| 3  | Node.js             | 22                                             |
+| 4  | Database Test       | SQLite (temporary database pada GitHub Runner) |
+| 5  | Dependency PHP      | Composer (`composer.lock`)                     |
+| 6  | Dependency Frontend | npm (`package-lock.json`)                      |
 
 ---
 
-# Perintah Verifikasi
+## 5. Alur Eksekusi Workflow
+
+Workflow menjalankan proses berikut secara berurutan:
+
+### Tahap 1 — Persiapan Source Code
+
+* Checkout source code
+* Setup PHP dan extension yang diperlukan
+* Setup Node.js
+
+### Tahap 2 — Verifikasi Dependency
+
+* Validasi konfigurasi Composer
+* Install dependency Composer berdasarkan lockfile
+* Audit kerentanan dependency PHP
+* Install dependency npm berdasarkan lockfile
+* Audit dependency frontend level High dan Critical
+
+### Tahap 3 — Persiapan Laravel
+
+* Membuat file `.env`
+* Generate Laravel Application Key
+* Membuat database SQLite sementara
+* Menjalankan migration
+
+### Tahap 4 — Build dan Optimasi
+
+* Build asset menggunakan Vite
+* Membuat Config Cache
+* Membuat Event Cache
+* Membuat Route Cache
+* Membuat View Cache
+
+### Tahap 5 — Pengujian
+
+* Menjalankan seluruh test menggunakan Pest
+
+---
+
+## 6. Perintah yang Diverifikasi oleh CI
 
 ```bash
 composer validate --no-check-publish
@@ -80,17 +94,17 @@ vendor/bin/pest --ci
 
 ---
 
-# Hasil Workflow
+## 7. Monitoring Hasil Workflow
 
-Status workflow dapat dilihat pada tab **Actions** repository.
+Status eksekusi workflow dapat dipantau melalui halaman Actions repository berikut:
 
 https://github.com/mauludi/pkbm-samboja/actions
 
 ---
 
-# Badge CI
+## 8. Badge Continuous Integration
 
-Tambahkan badge berikut pada README.
+Tambahkan badge berikut pada file README:
 
 ```html
 <a href="https://github.com/mauludi/pkbm-samboja/actions/workflows/ci.yml">
@@ -100,84 +114,108 @@ Tambahkan badge berikut pada README.
 
 ---
 
-# Screenshot Workflow
+## 9. Dokumentasi Screenshot
 
-Setelah workflow pertama berhasil dijalankan, tambahkan screenshot pada lokasi berikut.
+Apabila workflow berhasil dijalankan untuk pertama kali, simpan screenshot pada lokasi berikut:
 
-```
+```text
 docs/images/github-actions-success.png
 ```
 
 ---
 
-# Interpretasi Hasil
+## 10. Interpretasi Status Workflow
 
-| Status | Arti |
-|--------|------|
-| 🟢 Hijau | Seluruh tahapan berhasil dijalankan dan perubahan siap untuk direview. |
-| 🔴 Merah | Terdapat tahapan yang gagal. Buka job pertama yang error untuk mengetahui penyebabnya. |
-| 🟡 Queued | Workflow masih menunggu runner atau sedang diproses GitHub Actions. |
-
----
-
-# Batas Jaminan CI
-
-Pipeline CI ini memastikan bahwa pada environment:
-
-- Ubuntu Latest
-- PHP 8.4
-- Node.js 22
-- SQLite
-
-hal-hal berikut berhasil dilakukan:
-
-- Dependency berhasil dipasang dari lockfile.
-- Migration database berhasil dijalankan.
-- Asset frontend berhasil dibangun.
-- Cache production Laravel berhasil dibuat.
-- Dependency tidak memiliki advisory yang menyebabkan workflow gagal berdasarkan:
-  - Composer Audit
-  - npm Audit
-- Seluruh test Pest berhasil dijalankan.
-
-Namun CI **tidak menjamin** bahwa seluruh fitur aplikasi telah berjalan sempurna ataupun aplikasi sepenuhnya aman.
-
-Saat ini test yang tersedia telah mencakup:
-
-- Login
-- Pemisahan Role:
-  - Admin
-  - Tutor
-  - Siswa
-- PPDB per Tahun Ajaran
-- Penerima BOP
-- Non BOP / Mandiri
-- Reset Password View
-- Workflow Profil Filament
-
-Coverage pengujian tersebut masih belum mencakup seluruh fitur aplikasi.
-
-Selain itu, audit dependency **tidak dapat mendeteksi**:
-
-- Kesalahan logika aplikasi
-- Konfigurasi server
-- Kebocoran Secret
-- SQL Injection pada implementasi
-- Cross Site Scripting (XSS)
-- Kesalahan implementasi CSRF
-- Masalah Authorization
-
-Pengujian tersebut memerlukan test tambahan maupun tools static analysis.
-
-> **Status hijau hanya menunjukkan bahwa seluruh pemeriksaan CI berhasil dilewati, bukan merupakan sertifikasi keamanan aplikasi.**
+| Status     | Keterangan                                                           |
+| ---------- | -------------------------------------------------------------------- |
+| 🟢 Success | Semua tahapan berhasil dijalankan dan perubahan siap direview.       |
+| 🔴 Failed  | Terdapat proses yang gagal dan perlu diperiksa lebih lanjut.         |
+| 🟡 Queued  | Workflow sedang menunggu runner atau sedang diproses GitHub Actions. |
 
 ---
 
-# Status Audit
+## 11. Jaminan yang Diberikan CI
+
+Pipeline CI ini memastikan bahwa pada lingkungan berikut:
+
+* Ubuntu Latest
+* PHP 8.4
+* Node.js 22
+* SQLite
+
+proses berikut berhasil dilakukan:
+
+### Build Verification
+
+* Dependency berhasil dipasang dari lockfile.
+* Migration database berhasil dijalankan.
+* Asset frontend berhasil dibangun.
+* Cache production Laravel berhasil dibuat.
+
+### Dependency Verification
+
+* Composer Audit berhasil dijalankan.
+* npm Audit berhasil dijalankan.
+* Tidak terdapat advisory dependency yang menyebabkan workflow gagal.
+
+### Test Verification
+
+* Seluruh test Pest berhasil dijalankan.
+
+---
+
+## 12. Ruang Lingkup Test Saat Ini
+
+Pengujian yang telah tersedia mencakup:
+
+### Authentication
+
+* Login
+
+### Authorization
+
+* Admin
+* Tutor
+* Siswa
+
+### Business Process
+
+* PPDB per Tahun Ajaran
+* Penerima BOP
+* Non BOP / Mandiri
+
+### User Features
+
+* Reset Password View
+* Workflow Profil Filament
+
+Coverage tersebut belum mencakup seluruh fitur aplikasi.
+
+---
+
+## 13. Keterbatasan Audit Dependency
+
+Audit dependency tidak dapat mendeteksi:
+
+* Kesalahan logika aplikasi
+* Konfigurasi server yang tidak aman
+* Kebocoran secret
+* SQL Injection pada implementasi
+* Cross Site Scripting (XSS)
+* Kesalahan implementasi CSRF
+* Kesalahan Authorization
+
+Validasi terhadap aspek tersebut memerlukan pengujian tambahan maupun tools static analysis.
+
+> **Status hijau hanya menunjukkan bahwa seluruh proses CI berhasil dilewati dan bukan merupakan sertifikasi keamanan aplikasi.**
+
+---
+
+## 14. Status Audit Dependency
 
 Status audit dependency selalu mengikuti hasil workflow CI terbaru.
 
-Karena pipeline menjalankan:
+Pipeline secara otomatis menjalankan:
 
 ```bash
 composer audit --locked --no-interaction
@@ -185,21 +223,28 @@ composer audit --locked --no-interaction
 npm audit --audit-level=high
 ```
 
-maka log workflow terakhir merupakan sumber informasi utama mengenai advisory dependency yang masih aktif.
+Oleh karena itu, log workflow terakhir menjadi sumber informasi utama terkait advisory dependency yang masih aktif.
 
 ---
 
-# Pengembangan Selanjutnya
+## 15. Rekomendasi Pengembangan Selanjutnya
 
-Beberapa pengembangan yang direkomendasikan:
+### Penguatan Testing
 
-- Menambahkan Feature Test autentikasi dan redirect untuk:
-  - Admin
-  - Tutor
-  - Siswa
-- Menambahkan Policy Test pada setiap Resource
-- Menambahkan CRUD Test terutama fitur Input Nilai Siswa oleh Tutor
-- Menambahkan Browser Smoke Test ketika UI telah stabil
-- Menambahkan Static Analysis
-- Menambahkan Secret Scanning
-- Mengunggah Artifact log maupun Screenshot workflow sebagai lampiran laporan PBL
+* Menambahkan Feature Test autentikasi Admin
+* Menambahkan Feature Test autentikasi Tutor
+* Menambahkan Feature Test autentikasi Siswa
+* Menambahkan redirect test berdasarkan role
+* Menambahkan CRUD Test fitur Input Nilai Siswa
+
+### Penguatan Security
+
+* Menambahkan Static Analysis
+* Menambahkan Secret Scanning
+* Menambahkan Policy Test pada seluruh Resource
+
+### Quality Assurance
+
+* Menambahkan Browser Smoke Test setelah UI stabil
+* Mengunggah artifact log workflow
+* Mengunggah screenshot workflow sebagai lampiran laporan PBL

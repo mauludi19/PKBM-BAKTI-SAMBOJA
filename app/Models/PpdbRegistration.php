@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PpdbRegistration extends Model
 {
     protected $fillable = [
@@ -46,7 +46,7 @@ class PpdbRegistration extends Model
     /**
      * Relasi ke tahun ajaran.
      */
-    public function academicYear()
+    public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
     }
@@ -54,7 +54,7 @@ class PpdbRegistration extends Model
     /**
      * Relasi ke paket pendidikan.
      */
-    public function package()
+    public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class);
     }

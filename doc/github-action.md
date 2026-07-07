@@ -2,7 +2,7 @@
 
 ## Workflow yang Digunakan
 
-Website PKBM Bakti Samboja menggunakan workflow Continuous Integration (CI) untuk memverifikasi dependency, menyiapkan database, membangun aset frontend, dan menjalankan test secara otomatis.
+GitHub Actions merupakan layanan otomatisasi yang digunakan untuk menjalankan proses pengujian, validasi, dan integrasi kode secara otomatis sebelum perubahan kode digabungkan (merge) ke branch utama (main/master). PKBM Bakti Samboja menggunakan workflow Continuous Integration (CI) untuk memverifikasi dependency, menyiapkan database, membangun aset frontend, dan menjalankan test secara otomatis.
 
 ## Lokasi File
 
